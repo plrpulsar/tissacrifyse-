@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TIS Sacrifise - Interactuar con el contrato</title>
+    <title>TIS Sacrifise - Sacrificar Tokens</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -18,6 +18,11 @@
             <h2>Contador de Transacciones</h2>
             <div id="counter" class="counter">0</div>
             <button id="incrementCounter">Incrementar Contador</button>
+
+            <h2>¿Quieres Sacrificar Tokens?</h2>
+            <p>Selecciona la cantidad de tokens a sacrificar y confirma la acción.</p>
+            <input type="text" id="sacrificeAmount" placeholder="Cantidad a sacrificar" />
+            <button id="sacrificeTokens">Sacrificar Tokens</button>
 
             <h2>Consultar Balance</h2>
             <input type="text" id="addressInput" placeholder="Ingresa una dirección" />
@@ -35,3 +40,4 @@
     <script src="script.js"></script>
 </body>
 </html>
+
