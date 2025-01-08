@@ -12,13 +12,40 @@ let transactionCounter = 0;
 
 async function initialize() {
     if (window.ethereum) {
-        provider = new ethers.providers.Web3Provider(window.ethereum);
-        signer = provider.getSigner();
-        contract = new ethers.Contract(contractAddress, contractABI, signer);
+        try {
+            provider = new ethers.providers.Web3Provider(window.ethereum);
+            signer = provider.getSigner();
+            contract = new ethers.Contract(contractAddress, contractABI, signer);
 
-        await ethereum.request({ method: 'eth_requestAccounts' });
-        userAddress = await signer.getAddress();
-        document.getElementById("walletAddress").getElementsByTagName('span')[0].innerText = userAddress;
+            // Solicitar al usuario que conecte su billetera (MetaMask)
+            await ethereum.request({ method: 'eth_requestAccounts' });
+
+            userAddress = await signer.getAddress();
+            document.getElementById("walletAddress").getElementsByTagName('span')[0].innerText = userAddress;
+            
+            // Actualizar el estado de la billetera
+            document.getElementById("connectWallet").innerText = "Billetera Conectada";
+            document.getElementById("connectWallet").disabled = true;
+
+            // Establecer el proveedor de eventos para cambios en la red o cuenta de MetaMask
+            ethereum.on('accountsChanged', (accounts) => {
+                if (accounts.length === 0) {
+                    alert("MetaMask desconectada");
+                    document.getElementById("walletAddress").getElementsByTagName('span')[0].innerText = "Desconocido";
+                    document.getElementById("connectWallet").innerText = "Conectar Wallet";
+                    document.getElementById("connectWallet").disabled = false;
+                } else {
+                    userAddress = accounts[0];
+                    document.getElementById("walletAddress").getElementsByTagName('span')[0].innerText = userAddress;
+                }
+            });
+
+            ethereum.on('chainChanged', (chainId) => {
+                window.location.reload();
+            });
+        } catch (error) {
+            alert("No se pudo conectar a MetaMask: " + error.message);
+        }
     } else {
         alert("Por favor instala MetaMask");
     }
@@ -31,8 +58,12 @@ async function getBalance() {
         return;
     }
 
-    const balance = await contract.balanceOf(address);
-    document.getElementById("balanceResult").getElementsByTagName('span')[0].innerText = ethers.utils.formatUnits(balance, 18);
+    try {
+        const balance = await contract.balanceOf(address);
+        document.getElementById("balanceResult").getElementsByTagName('span')[0].innerText = ethers.utils.formatUnits(balance, 18);
+    } catch (error) {
+        alert("Error al obtener balance: " + error.message);
+    }
 }
 
 async function transferTokens() {
@@ -88,8 +119,10 @@ function incrementCounter() {
     document.getElementById("counter").innerText = transactionCounter;
 }
 
+// Funciones de interacción
 document.getElementById("connectWallet").addEventListener("click", initialize);
 document.getElementById("getBalance").addEventListener("click", getBalance);
 document.getElementById("transferTokens").addEventListener("click", transferTokens);
 document.getElementById("sacrificeTokens").addEventListener("click", sacrificeTokens);
 document.getElementById("incrementCounter").addEventListener("click", incrementCounter);
+
