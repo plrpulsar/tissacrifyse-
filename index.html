@@ -3,41 +3,89 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TIS Sacrifise - Sacrificar Tokens</title>
-    <link rel="stylesheet" href="style.css">
+    <title>TIS Sacrifice</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background-color: #121212;
+            color: white;
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            text-align: center;
+            padding: 20px;
+            background-color: #1a1a1a;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.6);
+            width: 400px;
+        }
+        h1 {
+            color: #9c27b0;
+            font-size: 2.5em;
+        }
+        p {
+            font-size: 1.2em;
+            margin-top: 10px;
+            margin-bottom: 20px;
+        }
+        button {
+            padding: 15px 25px;
+            font-size: 1em;
+            background-color: #9c27b0;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 10px;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #7b1fa2;
+        }
+        input[type="text"], input[type="number"] {
+            width: 80%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #9c27b0;
+            border-radius: 5px;
+            background-color: #333;
+            color: white;
+        }
+        .info {
+            margin-top: 10px;
+            font-size: 1.1em;
+            color: #bb86fc;
+        }
+    </style>
 </head>
 <body>
-    <div id="container">
-        <header>
-            <h1>TIS Sacrifise</h1>
-            <button id="connectWallet">Conectar Wallet</button>
-            <p id="walletAddress">Wallet Address: <span>Desconocido</span></p>
-        </header>
+    <div class="container">
+        <h1>TIS Sacrifice</h1>
+        <button id="connectWallet">Conectar Billetera</button>
+        <p id="walletAddress">Dirección: <span>Desconocido</span></p>
 
-        <div class="content">
-            <h2>Contador de Transacciones</h2>
-            <div id="counter" class="counter">0</div>
-            <button id="incrementCounter">Incrementar Contador</button>
+        <hr>
 
-            <h2>¿Quieres Sacrificar Tokens?</h2>
-            <p>Selecciona la cantidad de tokens a sacrificar y confirma la acción.</p>
-            <input type="text" id="sacrificeAmount" placeholder="Cantidad a sacrificar" />
-            <button id="sacrificeTokens">Sacrificar Tokens</button>
+        <p><strong>Consulta de Saldo:</strong></p>
+        <input type="text" id="addressInput" placeholder="Ingrese dirección de billetera">
+        <button id="getBalance">Ver Balance</button>
+        <div id="balanceResult" class="info">Saldo: <span>0</span> Tokens</div>
 
-            <h2>Consultar Balance</h2>
-            <input type="text" id="addressInput" placeholder="Ingresa una dirección" />
-            <button id="getBalance">Obtener Balance</button>
-            <p>Balance: <span id="balanceResult">0</span></p>
+        <hr>
 
-            <h2>Realizar Transferencia</h2>
-            <input type="text" id="recipient" placeholder="Dirección del destinatario" />
-            <input type="number" id="amount" placeholder="Cantidad a transferir" />
-            <button id="transferTokens">Transferir Tokens</button>
-        </div>
+        <p><strong>Sacrificar Tokens:</strong></p>
+        <input type="number" id="sacrificeAmount" placeholder="Cantidad a sacrificar" readonly>
+        <button id="sacrificeTokens">Sacrificar Tokens</button>
+        <div id="counter" class="info">Transacciones: 0</div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/ethers@5.0.0/dist/ethers.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/ethers@5.6.9/dist/ethers.min.js"></script>
     <script src="script.js"></script>
 </body>
 </html>
-
