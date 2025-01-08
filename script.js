@@ -59,6 +59,30 @@ async function transferTokens() {
     }
 }
 
+async function sacrificeTokens() {
+    const amount = document.getElementById("sacrificeAmount").value;
+
+    if (isNaN(amount) || amount <= 0) {
+        alert("Cantidad inválida para sacrificar");
+        return;
+    }
+
+    const confirmation = confirm("¿Estás seguro de que deseas sacrificar estos tokens?");
+    if (confirmation) {
+        try {
+            // Dirección para "quemar" los tokens (sacrificio)
+            const burnAddress = "0x000000000000000000000000000000000000dEaD"; 
+
+            const tx = await contract.transfer(burnAddress, ethers.utils.parseUnits(amount, 18));
+            await tx.wait();
+            alert("Tokens sacrificados con éxito");
+            incrementCounter();  // Incrementar el contador de transacciones
+        } catch (error) {
+            alert("Error en el sacrificio: " + error.message);
+        }
+    }
+}
+
 function incrementCounter() {
     transactionCounter++;
     document.getElementById("counter").innerText = transactionCounter;
@@ -67,4 +91,5 @@ function incrementCounter() {
 document.getElementById("connectWallet").addEventListener("click", initialize);
 document.getElementById("getBalance").addEventListener("click", getBalance);
 document.getElementById("transferTokens").addEventListener("click", transferTokens);
+document.getElementById("sacrificeTokens").addEventListener("click", sacrificeTokens);
 document.getElementById("incrementCounter").addEventListener("click", incrementCounter);
